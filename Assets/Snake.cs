@@ -5,6 +5,7 @@ using UnityEngine;
 public class Snake : MonoBehaviour
 {
     public double interval = 1;
+    public Transform prefab;
 
     double nextTick = 0;
     Vector3 direction;
@@ -15,6 +16,7 @@ public class Snake : MonoBehaviour
         line_renderer = GetComponent<LineRenderer>();
         nextTick = Time.time;
         direction = new Vector3(1,0,0);
+        Instantiate(prefab, new Vector3(0,0,0), Quaternion.identity, transform);
     }
 
     void Update()
@@ -34,18 +36,16 @@ public class Snake : MonoBehaviour
         }
 
 
-        var count = line_renderer.positionCount;
-        var positions = new Vector3[count];
-        line_renderer.GetPositions(positions);
-
-        var new_positions = new Vector3[count + 1];
-
-        for(int i = 0; i < count; ++i) {
-            new_positions[i] = positions[i];
+        foreach(Transform child in transform) {
+            Debug.Log(child.position);
         }
-        new_positions[count] = new_positions[count-1] + direction;
 
-        line_renderer.positionCount = count + 1;
-        line_renderer.SetPositions(new_positions);
+        var lastChild = transform.GetChild(transform.childCount - 1);
+
+        Instantiate(prefab, lastChild.position + direction, Quaternion.identity, transform);
+
+        Destroy (GetComponent<Transform> ().GetChild (0).gameObject);
+
+
     }
 }
