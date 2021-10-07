@@ -5,7 +5,7 @@ using UnityEngine;
 public class Snake : MonoBehaviour
 {
     public Transform prefab;
-    public int length = 1;
+    public int length;
     public Game game;
 
     double nextTick = 0;
